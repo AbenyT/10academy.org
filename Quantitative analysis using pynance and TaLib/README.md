@@ -30,11 +30,6 @@ AAPL_historical_data.csv: The historical stock price data for Apple Inc. (AAPL).
 Usage
 Clone the repository:
 
-bash
-Copy code
-git clone https://github.com/yourusername/AAPL-Stock-Analysis.git
-cd AAPL-Stock-Analysis
-Place the Data File:
 
 Ensure the AAPL_historical_data.csv file is in the root directory of the project.
 Run the Script:
