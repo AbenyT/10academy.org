@@ -20,18 +20,6 @@ The analysis is divided into several key sections:
 
 - **Headline Length Analysis**: The script calculates the length of each headline and provides basic statistics (mean, median, etc.) on these lengths. A histogram is plotted to visualize the distribution of headline lengths.
 
-### 2. Publisher Analysis
-
-- **Articles per Publisher**: The script counts the number of articles contributed by each publisher and visualizes the top publishers using a bar chart.
-
-### 3. Time Series Analysis
-
-- **Publication Trends**: The script analyzes the publication dates and times to identify trends. This includes:
-  - The number of articles published per day of the week.
-  - The number of articles published per month.
-  - The number of articles published at different hours of the day.
-
-- **Trend Analysis Over Time**: The script resamples the data to observe the number of articles published on a daily, weekly, and monthly basis, and visualizes these trends over time.
 
 ## Requirements
 
