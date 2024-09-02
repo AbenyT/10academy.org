@@ -45,3 +45,4 @@ news_data.to_csv(sentiment_path, index=False)
 # Print some results
 print("Sample Sentiment Analysis Results:")
 print(news_data[['Date', 'Headline', 'Sentiment']].head())
+
