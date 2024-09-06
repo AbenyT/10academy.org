@@ -1,0 +1,30 @@
+import pandas as pd
+
+# Load the dataset (replace with your actual file path)
+file_path = "D:/10 Acadamykifiya/TechnicalContent/data/Week1_challenge_data_source(CSV).csv"
+df = pd.read_csv(file_path)
+
+# Define the columns corresponding to downlink and uplink data for each application
+applications = {
+    'Social Media': ['Social Media DL (Bytes)', 'Social Media UL (Bytes)'],
+    'Google': ['Google DL (Bytes)', 'Google UL (Bytes)'],
+    'Email': ['Email DL (Bytes)', 'Email UL (Bytes)'],
+    'YouTube': ['YouTube DL (Bytes)', 'YouTube UL (Bytes)'],
+    'Netflix': ['Netflix DL (Bytes)', 'Netflix UL (Bytes)'],
+    'Gaming': ['Gaming DL (Bytes)', 'Gaming UL (Bytes)'],
+    'Other': ['Other DL (Bytes)', 'Other UL (Bytes)']
+}
+
+# Create a new DataFrame to store the aggregated traffic per application
+aggregated_traffic = pd.DataFrame()
+
+# Aggregate total traffic (DL + UL) per user (MSISDN) for each application
+for app, columns in applications.items():
+    df[app + ' Total Traffic'] = df[columns[0]] + df[columns[1]]
+    top_10_users = df.groupby('MSISDN')[[app + ' Total Traffic']].sum().nlargest(10, app + ' Total Traffic')
+    top_10_users.rename(columns={app + ' Total Traffic': app}, inplace=True)
+    aggregated_traffic = pd.concat([aggregated_traffic, top_10_users], axis=1)
+
+# Display the top 10 most engaged users for each application
+print("Top 10 most engaged users per application:")
+print(aggregated_traffic)
