@@ -1,0 +1,29 @@
+import pandas as pd
+
+# Load the dataset (replace with the actual file path)
+file_path = "D:/10 Acadamykifiya/TechnicalContent/data/Week1_challenge_data_source(CSV).csv"
+df = pd.read_csv(file_path)
+
+# Define the engagement metrics (both DL and UL where applicable)
+engagement_metrics = [
+    'Social Media DL (Bytes)', 'Social Media UL (Bytes)', 
+    'Google DL (Bytes)', 'Google UL (Bytes)', 
+    'Email DL (Bytes)', 'Email UL (Bytes)', 
+    'YouTube DL (Bytes)', 'YouTube UL (Bytes)', 
+    'Netflix DL (Bytes)', 'Netflix UL (Bytes)', 
+    'Gaming DL (Bytes)', 'Gaming UL (Bytes)', 
+    'Other DL (Bytes)', 'Other UL (Bytes)'
+]
+
+# Aggregate the metrics per customer id (MSISDN)
+aggregated_df = df.groupby('MSISDN')[engagement_metrics].sum().reset_index()
+
+# Function to report top 10 customers per engagement metric
+def report_top_10_customers(aggregated_data, metrics):
+    for metric in metrics:
+        top_10 = aggregated_data[['MSISDN', metric]].sort_values(by=metric, ascending=False).head(10)
+        print(f"\nTop 10 customers for {metric}:\n", top_10)
+
+# Report top 10 customers for each engagement metric
+report_top_10_customers(aggregated_df, engagement_metrics)
+
