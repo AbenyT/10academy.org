@@ -1,0 +1,58 @@
+# Import necessary libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Define the file path to your dataset
+file_path = r'D:\10 Acadamykifiya\TechnicalContent\data\Week1_challenge_data_source(CSV).csv'
+
+# Load the dataset
+df = pd.read_csv(file_path)
+
+# Replace 'total_DL_UL_column' with the actual column name for total DL + UL data in your dataset
+total_dl_ul_column = 'Total_DL_UL'  # Example name, update it with the actual one
+
+# Function to perform Bivariate Analysis
+def bivariate_analysis(df, total_dl_ul_column):
+    for column in df.columns:
+        # Skip the DL+UL column itself
+        if column == total_dl_ul_column:
+            continue
+        
+        # Check if the column is numerical
+        if pd.api.types.is_numeric_dtype(df[column]):
+            # Scatter Plot - Numerical vs Numerical
+            plt.figure()
+            sns.scatterplot(x=df[column], y=df[total_dl_ul_column])
+            plt.title(f'Scatter Plot of {column} vs {total_dl_ul_column}')
+            plt.xlabel(column)
+            plt.ylabel('Total DL + UL')
+            plt.show()
+
+            # Calculate and print Correlation
+            correlation = df[column].corr(df[total_dl_ul_column])
+            print(f'Correlation between {column} and {total_dl_ul_column}: {correlation}')
+        
+        # Check if the column is categorical
+        elif pd.api.types.is_categorical_dtype(df[column]) or df[column].dtype == 'object':
+            # Box Plot - Categorical vs Numerical
+            plt.figure()
+            sns.boxplot(x=df[column], y=df[total_dl_ul_column])
+            plt.title(f'Box Plot of {column} vs {total_dl_ul_column}')
+            plt.xlabel(column)
+            plt.ylabel('Total DL + UL')
+            plt.xticks(rotation=45)
+            plt.show()
+
+            # Bar Plot - Mean DL+UL per category
+            plt.figure()
+            df_grouped = df.groupby(column)[total_dl_ul_column].mean().reset_index()
+            sns.barplot(x=column, y=total_dl_ul_column, data=df_grouped)
+            plt.title(f'Mean of {total_dl_ul_column} for each category in {column}')
+            plt.xlabel(column)
+            plt.ylabel(f'Mean {total_dl_ul_column}')
+            plt.xticks(rotation=45)
+            plt.show()
+
+# Run the Bivariate Analysis
+bivariate_analysis(df, total_dl_ul_column)
