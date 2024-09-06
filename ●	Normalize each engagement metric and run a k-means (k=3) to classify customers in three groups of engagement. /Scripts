@@ -1,0 +1,46 @@
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+
+# Load the dataset (replace with the actual file path)
+file_path = "D:/10 Acadamykifiya/TechnicalContent/data/Week1_challenge_data_source(CSV).csv"
+df = pd.read_csv(file_path)
+
+# Define the engagement metrics (both DL and UL where applicable)
+engagement_metrics = [
+    'Social Media DL (Bytes)', 'Social Media UL (Bytes)', 
+    'Google DL (Bytes)', 'Google UL (Bytes)', 
+    'Email DL (Bytes)', 'Email UL (Bytes)', 
+    'YouTube DL (Bytes)', 'YouTube UL (Bytes)', 
+    'Netflix DL (Bytes)', 'Netflix UL (Bytes)', 
+    'Gaming DL (Bytes)', 'Gaming UL (Bytes)', 
+    'Other DL (Bytes)', 'Other UL (Bytes)'
+]
+
+# Aggregate the metrics per customer id (MSISDN)
+aggregated_df = df.groupby('MSISDN')[engagement_metrics].sum().reset_index()
+
+# Normalizing the engagement metrics using StandardScaler
+scaler = StandardScaler()
+normalized_data = scaler.fit_transform(aggregated_df[engagement_metrics])
+
+# Running K-Means clustering with k=3
+kmeans = KMeans(n_clusters=3, random_state=42)
+aggregated_df['Cluster'] = kmeans.fit_predict(normalized_data)
+
+# Output the cluster assignments for each customer
+print(aggregated_df[['MSISDN', 'Cluster']].head())
+
+# Visualizing the cluster centers
+cluster_centers = kmeans.cluster_centers_
+plt.figure(figsize=(10,6))
+plt.title("K-Means Cluster Centers for Engagement Metrics")
+for i, center in enumerate(cluster_centers):
+    plt.plot(center, label=f"Cluster {i}")
+plt.xticks(range(len(engagement_metrics)), engagement_metrics, rotation=90)
+plt.xlabel("Engagement Metrics")
+plt.ylabel("Normalized Values")
+plt.legend()
+plt.tight_layout()
+plt.show()
