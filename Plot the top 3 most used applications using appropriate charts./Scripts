@@ -1,0 +1,37 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the dataset (replace with your actual file path)
+file_path = "D:/10 Acadamykifiya/TechnicalContent/data/Week1_challenge_data_source(CSV).csv"
+df = pd.read_csv(file_path)
+
+# Define the columns corresponding to downlink and uplink data for each application
+applications = {
+    'Social Media': ['Social Media DL (Bytes)', 'Social Media UL (Bytes)'],
+    'Google': ['Google DL (Bytes)', 'Google UL (Bytes)'],
+    'Email': ['Email DL (Bytes)', 'Email UL (Bytes)'],
+    'YouTube': ['YouTube DL (Bytes)', 'YouTube UL (Bytes)'],
+    'Netflix': ['Netflix DL (Bytes)', 'Netflix UL (Bytes)'],
+    'Gaming': ['Gaming DL (Bytes)', 'Gaming UL (Bytes)'],
+    'Other': ['Other DL (Bytes)', 'Other UL (Bytes)']
+}
+
+# Create a new column for total traffic (DL + UL) for each application
+for app, columns in applications.items():
+    df[app + ' Total Traffic'] = df[columns[0]] + df[columns[1]]
+
+# Sum the total traffic for each application across all users
+total_traffic_per_app = {app: df[app + ' Total Traffic'].sum() for app in applications.keys()}
+
+# Sort the applications based on total traffic and get the top 3
+sorted_traffic = dict(sorted(total_traffic_per_app.items(), key=lambda item: item[1], reverse=True))
+top_3_apps = list(sorted_traffic.keys())[:3]
+top_3_traffic = list(sorted_traffic.values())[:3]
+
+# Plot the top 3 applications using a bar chart
+plt.figure(figsize=(8, 6))
+plt.bar(top_3_apps, top_3_traffic, color=['blue', 'green', 'orange'])
+plt.xlabel('Applications')
+plt.ylabel('Total Traffic (Bytes)')
+plt.title('Top 3 Most Used Applications Based on Total Traffic')
+plt.show()
