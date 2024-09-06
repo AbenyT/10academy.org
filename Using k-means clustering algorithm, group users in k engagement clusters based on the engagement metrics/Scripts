@@ -1,0 +1,50 @@
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset (replace with your actual file path)
+file_path = "D:/10 Acadamykifiya/TechnicalContent/data/Week1_challenge_data_source(CSV).csv"
+df = pd.read_csv(file_path)
+
+# Define the columns for engagement metrics (downlink + uplink data combined for each app)
+engagement_metrics = ['Social Media DL (Bytes)', 'Social Media UL (Bytes)',
+                      'Google DL (Bytes)', 'Google UL (Bytes)',
+                      'Email DL (Bytes)', 'Email UL (Bytes)',
+                      'YouTube DL (Bytes)', 'YouTube UL (Bytes)',
+                      'Netflix DL (Bytes)', 'Netflix UL (Bytes)',
+                      'Gaming DL (Bytes)', 'Gaming UL (Bytes)',
+                      'Other DL (Bytes)', 'Other UL (Bytes)']
+
+# Create total data (DL + UL) for each application
+for app in ['Social Media', 'Google', 'Email', 'YouTube', 'Netflix', 'Gaming', 'Other']:
+    df[app + ' Total Traffic'] = df[app + ' DL (Bytes)'] + df[app + ' UL (Bytes)']
+
+# Select only the total traffic columns for clustering
+traffic_data = df[['MSISDN'] + [app + ' Total Traffic' for app in ['Social Media', 'Google', 'Email', 'YouTube', 'Netflix', 'Gaming', 'Other']]]
+
+# Group by user (MSISDN) and aggregate traffic per user
+user_engagement = traffic_data.groupby('MSISDN').sum()
+
+# Normalize the engagement metrics
+scaler = StandardScaler()
+scaled_engagement = scaler.fit_transform(user_engagement)
+
+# Run K-means clustering (you can adjust k based on your requirements, e.g., k=3)
+k = 3
+kmeans = KMeans(n_clusters=k, random_state=42)
+user_engagement['Cluster'] = kmeans.fit_predict(scaled_engagement)
+
+# Add cluster labels back to the DataFrame
+user_engagement['Cluster'] = kmeans.labels_
+
+# Display cluster counts
+print(user_engagement['Cluster'].value_counts())
+
+# Visualize the cluster distributions
+sns.countplot(x='Cluster', data=user_engagement)
+plt.title(f'Cluster distribution of users (k={k})')
+plt.xlabel('Cluster')
+plt.ylabel('Number of Users')
+plt.show()
