@@ -2,10 +2,10 @@
 import pandas as pd
 import numpy as np
 
-# Load the dataset
-file_path = '/mnt/data/image.png'  # Adjust this path to your dataset's location or name
-# Load your dataset (replace with pd.read_csv if your file is a CSV)
-# Assuming it's a CSV format, otherwise adjust according to your data format
+# Define the file path to your dataset
+file_path = r'D:\10 Acadamykifiya\TechnicalContent\data\Week1_challenge_data_source(CSV).csv'
+
+# Load the dataset (assuming it's a CSV file)
 df = pd.read_csv(file_path)
 
 # Perform basic statistical analysis
@@ -14,7 +14,7 @@ def analyze_basic_metrics(df):
 
     # Iterate through each column in the dataset
     for column in df.select_dtypes(include=[np.number]).columns:
-        # Skip missing values
+        # Skip columns with all missing values
         if df[column].isnull().all():
             continue
 
@@ -38,5 +38,6 @@ metrics_df = analyze_basic_metrics(df)
 # Display the results
 print(metrics_df)
 
-# Save the results to a CSV file for further review
-metrics_df.to_csv('basic_metrics_analysis.csv')
+# Optionally save the results to a CSV file for further review
+metrics_df.to_csv('basic_metrics_analysis.csv', index=False)
+
