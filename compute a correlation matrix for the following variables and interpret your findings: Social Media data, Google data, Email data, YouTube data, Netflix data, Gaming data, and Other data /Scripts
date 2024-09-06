@@ -1,0 +1,24 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the dataset (replace the file path with your actual file path)
+file_path = "D:/10 Acadamykifiya/TechnicalContent/data/Week1_challenge_data_source(CSV).csv"
+df = pd.read_csv(file_path)
+
+# Select the relevant columns for analysis
+data_columns = ['Social Media DL (Bytes)', 'Google DL (Bytes)', 'Email DL (Bytes)', 
+                'YouTube DL (Bytes)', 'Netflix DL (Bytes)', 'Gaming DL (Bytes)', 'Other DL (Bytes)']
+
+# Calculate the correlation matrix
+correlation_matrix = df[data_columns].corr()
+
+# Print the correlation matrix
+print("Correlation Matrix:")
+print(correlation_matrix)
+
+# Plot the correlation matrix using a heatmap
+plt.figure(figsize=(10, 8))
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', linewidths=0.5)
+plt.title("Correlation Matrix for Data Usage by Application")
+plt.show()
