@@ -1,0 +1,62 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset (replace with the actual file path)
+file_path = "D:/10 Acadamykifiya/TechnicalContent/data/Week1_challenge_data_source(CSV).csv"
+df = pd.read_csv(file_path)
+
+# Define the engagement metrics (both DL and UL where applicable)
+engagement_metrics = [
+    'Social Media DL (Bytes)', 'Social Media UL (Bytes)', 
+    'Google DL (Bytes)', 'Google UL (Bytes)', 
+    'Email DL (Bytes)', 'Email UL (Bytes)', 
+    'YouTube DL (Bytes)', 'YouTube UL (Bytes)', 
+    'Netflix DL (Bytes)', 'Netflix UL (Bytes)', 
+    'Gaming DL (Bytes)', 'Gaming UL (Bytes)', 
+    'Other DL (Bytes)', 'Other UL (Bytes)'
+]
+
+# Aggregate the metrics per customer id (MSISDN)
+aggregated_df = df.groupby('MSISDN')[engagement_metrics].sum().reset_index()
+
+# Normalizing the engagement metrics using StandardScaler
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+
+scaler = StandardScaler()
+normalized_data = scaler.fit_transform(aggregated_df[engagement_metrics])
+
+# Running K-Means clustering with k=3
+kmeans = KMeans(n_clusters=3, random_state=42)
+aggregated_df['Cluster'] = kmeans.fit_predict(normalized_data)
+
+# Compute min, max, average & total non-normalized metrics for each cluster
+cluster_stats = aggregated_df.groupby('Cluster')[engagement_metrics].agg(['min', 'max', 'mean', 'sum'])
+
+# Display the computed statistics
+print(cluster_stats)
+
+# Visualization of the metrics (Average per cluster)
+plt.figure(figsize=(14,8))
+sns.set(style="whitegrid")
+for metric in engagement_metrics:
+    sns.barplot(x=cluster_stats.index, y=cluster_stats[(metric, 'mean')], label=metric)
+plt.title('Average of Engagement Metrics per Cluster')
+plt.xlabel('Cluster')
+plt.ylabel('Average (Bytes)')
+plt.legend(loc='upper right', bbox_to_anchor=(1.25, 1), title='Metrics')
+plt.tight_layout()
+plt.show()
+
+# Visualization of total metrics per cluster
+plt.figure(figsize=(14,8))
+for metric in engagement_metrics:
+    sns.barplot(x=cluster_stats.index, y=cluster_stats[(metric, 'sum')], label=metric)
+plt.title('Total Engagement Metrics per Cluster')
+plt.xlabel('Cluster')
+plt.ylabel('Total (Bytes)')
+plt.legend(loc='upper right', bbox_to_anchor=(1.25, 1), title='Metrics')
+plt.tight_layout()
+plt.show()
