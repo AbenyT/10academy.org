@@ -1,0 +1,43 @@
+# Import necessary libraries
+import pandas as pd
+import numpy as np
+
+# Define the file path to your dataset
+file_path = r'D:\10 Acadamykifiya\TechnicalContent\data\Week1_challenge_data_source(CSV).csv'
+
+# Load the dataset (assuming it's a CSV file)
+df = pd.read_csv(file_path)
+
+# Perform Non-Graphical Univariate Analysis by computing dispersion parameters
+def compute_dispersion_parameters(df):
+    dispersion_metrics = {}
+
+    # Iterate through each numerical column in the dataset
+    for column in df.select_dtypes(include=[np.number]).columns:
+        # Skip columns with all missing values
+        if df[column].isnull().all():
+            continue
+
+        # Calculate dispersion parameters
+        range_value = df[column].max() - df[column].min()
+        variance_value = df[column].var()
+        std_dev_value = df[column].std()
+        iqr_value = df[column].quantile(0.75) - df[column].quantile(0.25)
+
+        dispersion_metrics[column] = {
+            'Range': range_value,
+            'Variance': variance_value,
+            'Standard Deviation': std_dev_value,
+            'Interquartile Range (IQR)': iqr_value
+        }
+
+    return pd.DataFrame(dispersion_metrics)
+
+# Run the analysis and store results
+dispersion_df = compute_dispersion_parameters(df)
+
+# Display the results
+print(dispersion_df)
+
+# Optionally save the results to a CSV file for further review
+dispersion_df.to_csv('dispersion_analysis.csv', index=False)
