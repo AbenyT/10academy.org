@@ -1,0 +1,30 @@
+# Import necessary libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Define the path to your CSV file
+file_path = r'D:\10 Acadamy kifiya\Technical Content\data\Week1_challenge_data_source(CSV)\your_file_name.csv'
+
+# Load the dataset into a pandas DataFrame
+df = pd.read_csv(file_path)
+
+# Handle missing values for TCP retransmission (if not already handled)
+df['tcp_retransmission'] = df['tcp_retransmission'].fillna(df['tcp_retransmission'].mean())
+
+# Task: Compute the average TCP retransmission per handset type
+avg_tcp_retransmission_per_handset = df.groupby('handset_type')['tcp_retransmission'].mean().reset_index()
+
+# Sort the results by TCP retransmission to make the distribution clearer
+avg_tcp_retransmission_per_handset = avg_tcp_retransmission_per_handset.sort_values(by='tcp_retransmission', ascending=False)
+
+# Display the first few rows of the results
+print(avg_tcp_retransmission_per_handset.head())
+
+# Plot the distribution of the average TCP retransmission per handset type
+plt.figure(figsize=(12, 6))
+sns.barplot(x='tcp_retransmission', y='handset_type', data=avg_tcp_retransmission_per_handset, palette='coolwarm')
+plt.title('Average TCP Retransmission per Handset Type')
+plt.xlabel('Average TCP Retransmission')
+plt.ylabel('Handset Type')
+plt.show()
