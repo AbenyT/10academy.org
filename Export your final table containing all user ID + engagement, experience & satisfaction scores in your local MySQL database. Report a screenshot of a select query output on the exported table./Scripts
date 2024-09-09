@@ -1,0 +1,50 @@
+pip install mysql-connector-python
+CREATE DATABASE user_scores;
+
+USE user_scores;
+
+CREATE TABLE user_engagement (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    engagement_score FLOAT,
+    experience_score FLOAT,
+    satisfaction_score FLOAT
+);
+import mysql.connector
+import pandas as pd
+
+# Load your final table (replace with the actual path and CSV file if needed)
+file_path = 'D:/10 Acadamy kifiya/Technical Content/data/Week1_challenge_data_source(CSV)'
+data = pd.read_csv(file_path)
+
+# Assuming engagement, experience, and satisfaction scores have been computed
+# Sample dataframe with these columns
+# data = pd.DataFrame({
+#     'engagement_score': [1.0, 2.0, 3.0],
+#     'experience_score': [2.5, 3.5, 4.0],
+#     'satisfaction_score': [2.2, 3.0, 3.7]
+# })
+
+# Establish a connection to the MySQL database
+conn = mysql.connector.connect(
+    host="localhost",  # Your MySQL host
+    user="root",       # Your MySQL username
+    password="your_password",  # Your MySQL password
+    database="user_scores"  # Your MySQL database
+)
+
+cursor = conn.cursor()
+
+# Insert the data into the MySQL table
+for index, row in data.iterrows():
+    sql = "INSERT INTO user_engagement (engagement_score, experience_score, satisfaction_score) VALUES (%s, %s, %s)"
+    values = (row['engagement_score'], row['experience_score'], row['satisfaction_score'])
+    cursor.execute(sql, values)
+
+# Commit the transaction
+conn.commit()
+
+# Close the connection
+cursor.close()
+conn.close()
+
+print("Data successfully exported to MySQL!")
