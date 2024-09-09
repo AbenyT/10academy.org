@@ -1,0 +1,56 @@
+# Import necessary libraries
+import pandas as pd
+import numpy as np
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+from scipy.spatial.distance import euclidean
+
+# Load the dataset
+file_path = r'D:\10 Acadamy kifiya\Technical Content\data\Week1_challenge_data_source(CSV)\your_file_name.csv'
+df = pd.read_csv(file_path)
+
+# Handle missing values by filling with the mean for relevant columns
+df['tcp_retransmission'] = df['tcp_retransmission'].fillna(df['tcp_retransmission'].mean())
+df['rtt'] = df['rtt'].fillna(df['rtt'].mean())
+df['throughput'] = df['throughput'].fillna(df['throughput'].mean())
+
+# Select the features for clustering
+features = df[['tcp_retransmission', 'rtt', 'throughput']]
+
+# Normalize the data (K-means is distance-based, so scaling is necessary)
+scaler = StandardScaler()
+features_scaled = scaler.fit_transform(features)
+
+# Apply K-means clustering with k=3
+kmeans = KMeans(n_clusters=3, random_state=42)
+df['cluster'] = kmeans.fit_predict(features_scaled)
+
+# Identify the centroids for each cluster
+centroids = kmeans.cluster_centers_
+
+# Convert scaled centroids back to original scale for easier interpretation
+centroids_original_scale = scaler.inverse_transform(centroids)
+
+# Identify the least engaged cluster (assumed to have highest tcp_retransmission and RTT, lowest throughput)
+cluster_summary = pd.DataFrame(centroids_original_scale, columns=['tcp_retransmission', 'rtt', 'throughput'])
+print("Cluster Summary (Centroids in Original Scale):\n", cluster_summary)
+
+# Assume the least engaged cluster is the one with the highest average tcp_retransmission
+least_engaged_cluster_idx = cluster_summary['tcp_retransmission'].idxmax()
+
+# Get the centroid of the least engaged cluster
+least_engaged_centroid = centroids[least_engaged_cluster_idx]
+
+# Function to calculate Euclidean distance between each user's experience metrics and the least engaged cluster's centroid
+def calculate_engagement_score(row, least_engaged_centroid):
+    user_point = np.array([row['tcp_retransmission'], row['rtt'], row['throughput']])
+    return euclidean(user_point, least_engaged_centroid)
+
+# Assign engagement score to each user based on the Euclidean distance
+df['engagement_score'] = df.apply(calculate_engagement_score, axis=1, least_engaged_centroid=least_engaged_centroid)
+
+# Display the dataframe with engagement scores
+print(df[['tcp_retransmission', 'rtt', 'throughput', 'cluster', 'engagement_score']].head())
+
+# Save the dataframe with engagement scores for further analysis
+df.to_csv('user_engagement_scores.csv', index=False)
