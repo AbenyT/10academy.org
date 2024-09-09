@@ -1,0 +1,56 @@
+# Import necessary libraries
+import pandas as pd
+import numpy as np
+
+# Define the path to your CSV file
+file_path = r'D:\10 Acadamy kifiya\Technical Content\data\Week1_challenge_data_source(CSV)\your_file_name.csv'
+
+# Read the CSV file into a pandas DataFrame
+try:
+    df = pd.read_csv(file_path)
+    print("File successfully loaded!")
+except FileNotFoundError:
+    print("File not found. Please check the file path.")
+
+# View the first few rows of the dataset
+print(df.head())
+
+# Columns you might be dealing with (adjust based on actual column names in your data)
+# Assuming the columns in your dataset might be named as follows:
+# - 'customer_id': customer identifier
+# - 'tcp_retransmission': TCP retransmission data
+# - 'rtt': Round-trip time
+# - 'throughput': Throughput data
+# - 'handset_type': Type of handset used by the customer
+
+# Check for missing values and replace them with the mean (for numerical data) or mode (for categorical data)
+# Replacing missing values in numeric columns with mean
+df['tcp_retransmission'] = df['tcp_retransmission'].fillna(df['tcp_retransmission'].mean())
+df['rtt'] = df['rtt'].fillna(df['rtt'].mean())
+df['throughput'] = df['throughput'].fillna(df['throughput'].mean())
+
+# Replacing missing values in categorical columns with mode
+df['handset_type'] = df['handset_type'].fillna(df['handset_type'].mode()[0])
+
+# Handle outliers by replacing values beyond a certain threshold with the mean
+# This assumes any values above the 99th percentile are outliers, adjust this as necessary
+for col in ['tcp_retransmission', 'rtt', 'throughput']:
+    upper_limit = df[col].quantile(0.99)
+    df[col] = np.where(df[col] > upper_limit, df[col].mean(), df[col])
+
+# Now aggregate the data per customer
+aggregated_data = df.groupby('customer_id').agg({
+    'tcp_retransmission': 'mean',
+    'rtt': 'mean',
+    'throughput': 'mean',
+    'handset_type': lambda x: x.mode()[0]  # Mode to get the most common handset type per customer
+}).reset_index()
+
+# Display the aggregated data
+print("Aggregated Data:")
+print(aggregated_data.head())
+
+# Save the aggregated data to a new CSV file if needed
+output_file_path = r'D:\10 Acadamy kifiya\Technical Content\data\Week1_challenge_data_source(CSV)\aggregated_customer_data.csv'
+aggregated_data.to_csv(output_file_path, index=False)
+print(f"Aggregated data saved to: {output_file_path}")
