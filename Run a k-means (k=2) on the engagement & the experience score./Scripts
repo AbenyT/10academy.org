@@ -1,0 +1,37 @@
+import pandas as pd
+import numpy as np
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset
+file_path = 'D:/10 Acadamy kifiya/Technical Content/data/Week1_challenge_data_source(CSV)'
+data = pd.read_csv(file_path)
+
+# Assuming 'engagement_score' and 'experience_score' have already been computed and exist in the dataset
+# Drop rows with missing values in the scores
+data = data.dropna(subset=['engagement_score', 'experience_score'])
+
+# Select the relevant columns for clustering
+X = data[['engagement_score', 'experience_score']]
+
+# Run K-Means clustering with k=2
+kmeans = KMeans(n_clusters=2, random_state=42)
+data['cluster'] = kmeans.fit_predict(X)
+
+# Print cluster centers
+print("Cluster Centers: \n", kmeans.cluster_centers_)
+
+# Visualizing the clusters
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='engagement_score', y='experience_score', hue='cluster', data=data, palette='viridis', s=100)
+plt.title('K-Means Clustering (k=2) on Engagement and Experience Scores')
+plt.xlabel('Engagement Score')
+plt.ylabel('Experience Score')
+plt.legend(title='Cluster')
+plt.grid(True)
+plt.show()
+
+# You can save the clustered data (optional)
+output_path = 'D:/10 Acadamy kifiya/Technical Content/data/clustered_engagement_experience.csv'
+data.to_csv(output_path, index=False)
