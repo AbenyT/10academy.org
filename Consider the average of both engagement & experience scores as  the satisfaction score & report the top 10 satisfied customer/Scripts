@@ -1,0 +1,77 @@
+import pandas as pd
+import numpy as np
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+from scipy.spatial.distance import euclidean
+
+# Load the dataset
+file_path = 'D:/10 Acadamy kifiya/Technical Content/data/Week1_challenge_data_source(CSV)'
+data = pd.read_csv(file_path)
+
+# Select relevant columns for experience metrics
+experience_columns = ['Avg RTT DL (ms)', 'Avg RTT UL (ms)', 'Avg Bearer TP DL (kbps)', 'Avg Bearer TP UL (kbps)', 'TCP DL Retrans. Vol (Bytes)', 'TCP UL Retrans. Vol (Bytes)']
+
+# Handle missing values by replacing with mean
+data[experience_columns] = data[experience_columns].fillna(data[experience_columns].mean())
+
+# Scale the data for better K-Means performance
+scaler = StandardScaler()
+experience_data_scaled = scaler.fit_transform(data[experience_columns])
+
+# Perform K-Means clustering for experience (k=3)
+kmeans = KMeans(n_clusters=3, random_state=42)
+data['cluster'] = kmeans.fit_predict(experience_data_scaled)
+
+# Find centroids of the clusters
+centroids = kmeans.cluster_centers_
+
+# Identify the worst experience cluster based on the mean values of the centroids
+worst_experience_cluster_index = np.argmax([np.mean(centroid) for centroid in centroids])
+
+# Compute the experience score (Euclidean distance to the worst experience cluster centroid)
+def compute_experience_score(row, centroid):
+    user_metrics = row[experience_columns].values
+    return euclidean(user_metrics, centroid)
+
+# Calculate experience score for each user
+data['experience_score'] = data.apply(lambda row: compute_experience_score(row, centroids[worst_experience_cluster_index]), axis=1)
+
+# --------------------------- Compute Engagement Score (Assuming the engagement metrics) ---------------------------
+# Engagement metrics can be similar to the experience metrics (replace with the actual engagement-related metrics)
+engagement_columns = ['Avg RTT DL (ms)', 'Avg RTT UL (ms)', 'Avg Bearer TP DL (kbps)', 'Avg Bearer TP UL (kbps)', 'TCP DL Retrans. Vol (Bytes)', 'TCP UL Retrans. Vol (Bytes)']
+
+# Perform K-Means clustering for engagement (k=3)
+engagement_data_scaled = scaler.fit_transform(data[engagement_columns])
+
+# K-Means for engagement
+kmeans_engagement = KMeans(n_clusters=3, random_state=42)
+data['engagement_cluster'] = kmeans_engagement.fit_predict(engagement_data_scaled)
+
+# Find centroids for engagement clusters
+engagement_centroids = kmeans_engagement.cluster_centers_
+
+# Identify the least engaged cluster
+least_engaged_cluster_index = np.argmax([np.mean(centroid) for centroid in engagement_centroids])
+
+# Compute engagement score (Euclidean distance to the least engaged cluster centroid)
+def compute_engagement_score(row, centroid):
+    user_metrics = row[engagement_columns].values
+    return euclidean(user_metrics, centroid)
+
+# Calculate engagement score for each user
+data['engagement_score'] = data.apply(lambda row: compute_engagement_score(row, engagement_centroids[least_engaged_cluster_index]), axis=1)
+
+# --------------------------- Compute Satisfaction Score ---------------------------
+# Calculate the satisfaction score as the average of the engagement and experience scores
+data['satisfaction_score'] = data[['engagement_score', 'experience_score']].mean(axis=1)
+
+# Sort users by satisfaction score in ascending order (higher satisfaction means lower score)
+top_satisfied_customers = data[['MSISDN/Number', 'satisfaction_score']].sort_values(by='satisfaction_score', ascending=True).head(10)
+
+# Display the top 10 satisfied customers
+print("Top 10 Satisfied Customers:")
+print(top_satisfied_customers)
+
+# Save results to a new CSV file if needed
+output_path = 'D:/10 Acadamy kifiya/Technical Content/data/top_satisfied_customers.csv'
+top_satisfied_customers.to_csv(output_path, index=False)
