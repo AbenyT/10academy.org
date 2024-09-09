@@ -1,0 +1,30 @@
+# Import necessary libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Define the path to your CSV file
+file_path = r'D:\10 Acadamy kifiya\Technical Content\data\Week1_challenge_data_source(CSV)\your_file_name.csv'
+
+# Load the dataset into a pandas DataFrame
+df = pd.read_csv(file_path)
+
+# Handle missing values for throughput (if not already handled)
+df['throughput'] = df['throughput'].fillna(df['throughput'].mean())
+
+# Task: Compute the average throughput per handset type
+avg_throughput_per_handset = df.groupby('handset_type')['throughput'].mean().reset_index()
+
+# Sort the results by throughput to make the distribution clearer
+avg_throughput_per_handset = avg_throughput_per_handset.sort_values(by='throughput', ascending=False)
+
+# Display the first few rows of the results
+print(avg_throughput_per_handset.head())
+
+# Plot the distribution of the average throughput per handset type
+plt.figure(figsize=(12, 6))
+sns.barplot(x='throughput', y='handset_type', data=avg_throughput_per_handset, palette='viridis')
+plt.title('Average Throughput per Handset Type')
+plt.xlabel('Average Throughput')
+plt.ylabel('Handset Type')
+plt.show()
