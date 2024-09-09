@@ -1,0 +1,31 @@
+import pandas as pd
+from sklearn.cluster import KMeans
+
+# Load the dataset (assuming the dataset contains engagement_score, experience_score, and satisfaction_score)
+file_path = 'D:/10 Acadamy kifiya/Technical Content/data/Week1_challenge_data_source(CSV)'
+data = pd.read_csv(file_path)
+
+# Assuming 'engagement_score', 'experience_score', and 'satisfaction_score' have already been computed
+# Drop rows with missing values in the scores
+data = data.dropna(subset=['engagement_score', 'experience_score', 'satisfaction_score'])
+
+# Select the relevant columns for clustering
+X = data[['engagement_score', 'experience_score']]
+
+# Run K-Means clustering with k=2
+kmeans = KMeans(n_clusters=2, random_state=42)
+data['cluster'] = kmeans.fit_predict(X)
+
+# Aggregate the average satisfaction and experience score per cluster
+cluster_aggregates = data.groupby('cluster').agg({
+    'satisfaction_score': 'mean',
+    'experience_score': 'mean',
+    'engagement_score': 'mean'
+}).reset_index()
+
+# Print the aggregated results
+print(cluster_aggregates)
+
+# Save the results to a CSV file (optional)
+output_path = 'D:/10 Acadamy kifiya/Technical Content/data/cluster_aggregates.csv'
+cluster_aggregates.to_csv(output_path, index=False)
