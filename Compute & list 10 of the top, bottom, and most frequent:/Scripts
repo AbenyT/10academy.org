@@ -1,0 +1,71 @@
+# Import necessary libraries
+import pandas as pd
+
+# Define the path to your CSV file
+file_path = r'D:\10 Acadamy kifiya\Technical Content\data\Week1_challenge_data_source(CSV)\your_file_name.csv'
+
+# Load the dataset into a pandas DataFrame
+try:
+    df = pd.read_csv(file_path)
+    print("File successfully loaded!")
+except FileNotFoundError:
+    print("File not found. Please check the file path.")
+
+# View the first few rows of the dataset
+print(df.head())
+
+# Handle missing values (same as in Task 3.1)
+df['tcp_retransmission'] = df['tcp_retransmission'].fillna(df['tcp_retransmission'].mean())
+df['rtt'] = df['rtt'].fillna(df['rtt'].mean())
+df['throughput'] = df['throughput'].fillna(df['throughput'].mean())
+
+# Task 3.2 - Compute & list top, bottom, and most frequent TCP, RTT, and throughput values
+
+# Function to get top 10, bottom 10, and most frequent 10 values for a column
+def get_top_bottom_most_frequent(df, column_name):
+    # Sort the column to get top 10 and bottom 10 values
+    sorted_values = df[column_name].sort_values()
+    top_10 = sorted_values.tail(10)
+    bottom_10 = sorted_values.head(10)
+    
+    # Get the most frequent 10 values
+    most_frequent_10 = df[column_name].value_counts().head(10)
+    
+    return top_10, bottom_10, most_frequent_10
+
+# Get the top, bottom, and most frequent values for TCP retransmission
+top_10_tcp, bottom_10_tcp, most_frequent_10_tcp = get_top_bottom_most_frequent(df, 'tcp_retransmission')
+
+# Get the top, bottom, and most frequent values for RTT
+top_10_rtt, bottom_10_rtt, most_frequent_10_rtt = get_top_bottom_most_frequent(df, 'rtt')
+
+# Get the top, bottom, and most frequent values for throughput
+top_10_throughput, bottom_10_throughput, most_frequent_10_throughput = get_top_bottom_most_frequent(df, 'throughput')
+
+# Display the results
+print("\nTop 10 TCP Retransmission Values:")
+print(top_10_tcp)
+
+print("\nBottom 10 TCP Retransmission Values:")
+print(bottom_10_tcp)
+
+print("\nMost Frequent 10 TCP Retransmission Values:")
+print(most_frequent_10_tcp)
+
+print("\nTop 10 RTT Values:")
+print(top_10_rtt)
+
+print("\nBottom 10 RTT Values:")
+print(bottom_10_rtt)
+
+print("\nMost Frequent 10 RTT Values:")
+print(most_frequent_10_rtt)
+
+print("\nTop 10 Throughput Values:")
+print(top_10_throughput)
+
+print("\nBottom 10 Throughput Values:")
+print(bottom_10_throughput)
+
+print("\nMost Frequent 10 Throughput Values:")
+print(most_frequent_10_throughput)
