@@ -1,0 +1,48 @@
+# Import necessary libraries
+import pandas as pd
+import numpy as np
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset
+file_path = r'D:\10 Acadamy kifiya\Technical Content\data\Week1_challenge_data_source(CSV)\your_file_name.csv'
+df = pd.read_csv(file_path)
+
+# Handle missing values by filling with the mean for relevant columns
+df['tcp_retransmission'] = df['tcp_retransmission'].fillna(df['tcp_retransmission'].mean())
+df['rtt'] = df['rtt'].fillna(df['rtt'].mean())
+df['throughput'] = df['throughput'].fillna(df['throughput'].mean())
+
+# Select the features for clustering
+features = df[['tcp_retransmission', 'rtt', 'throughput']]
+
+# Normalize the data (K-means is distance-based, so scaling is necessary)
+scaler = StandardScaler()
+features_scaled = scaler.fit_transform(features)
+
+# Apply K-means clustering with k=3
+kmeans = KMeans(n_clusters=3, random_state=42)
+df['cluster'] = kmeans.fit_predict(features_scaled)
+
+# Add the cluster labels to the original dataframe
+df['cluster'] = kmeans.labels_
+
+# Summarize the characteristics of each cluster
+cluster_summary = df.groupby('cluster')[['tcp_retransmission', 'rtt', 'throughput']].mean()
+
+# Display the summary of the clusters
+print(cluster_summary)
+
+# Visualize the clustering results
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='throughput', y='tcp_retransmission', hue='cluster', data=df, palette='Set1')
+plt.title('User Segmentation Based on Experience Metrics')
+plt.xlabel('Throughput')
+plt.ylabel('TCP Retransmission')
+plt.show()
+
+# Plot a pairplot for a more detailed view of clusters
+sns.pairplot(df[['tcp_retransmission', 'rtt', 'throughput', 'cluster']], hue='cluster', palette='Set1')
+plt.show()
