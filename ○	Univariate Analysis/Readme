@@ -1,0 +1,62 @@
+# Univariate Analysis of Machine Learning Dataset
+
+This repository contains a Python script that performs univariate analysis on the dataset `MachineLearningRating_v3.txt`. The analysis includes plotting histograms for numerical columns and bar charts for categorical columns to better understand the distribution of each variable.
+
+## Dataset
+
+- **Dataset Name**: `MachineLearningRating_v3.txt`
+- **Delimiter**: Pipe (`|`)
+
+### Column Types
+- **Numerical Columns**: Columns with numerical data (e.g., integers, floats).
+- **Categorical Columns**: Columns with categorical or string data (e.g., IDs, labels, boolean values).
+
+## Prerequisites
+
+Make sure you have the following Python libraries installed:
+
+```bash
+pip install pandas matplotlib seaborn
+Libraries Used:
+pandas: To load and manipulate the dataset.
+matplotlib: To create plots.
+seaborn: To style and generate histograms and bar charts.
+Project Structure
+univariate_analysis.py: The main Python script that performs the univariate analysis.
+MachineLearningRating_v3.txt: The dataset used for analysis (this file should be in the same directory as the script).
+How to Run the Script
+Download the dataset: Place MachineLearningRating_v3.txt in the same folder as the script.
+
+Run the script:
+
+bash
+Copy code
+python univariate_analysis.py
+View Output: The script will generate histograms for numerical columns and bar charts for categorical columns and display them one by one.
+
+Example Usage
+bash
+Copy code
+python univariate_analysis.py
+After running, you will see visualizations for each column in the dataset:
+
+Histograms for variables such as TotalAmount, TransactionMonth, etc.
+Bar charts for variables such as ProductID, IsVATRegistered, etc.
+Functions
+plot_numerical_distribution(df, cols): This function iterates through the numerical columns in the dataset and plots histograms for each one.
+plot_categorical_distribution(df, cols): This function iterates through the categorical columns and generates bar charts for each one.
+Customization
+You can modify the appearance of the plots by adjusting parameters in seaborn.histplot() and seaborn.countplot() in the script. For example, change the number of bins in the histogram or the color palette used for bar charts.
+
+Saving the Plots
+If you want to save the plots instead of showing them directly, you can modify the script to use plt.savefig() to save the figures to a folder:
+
+python
+Copy code
+plt.savefig('output_directory/plot_name.png')
+Future Enhancements
+Add support for automated analysis of datetime columns.
+Enhance visualizations with more advanced statistical overlays (e.g., normality tests).
+Add interactive plotting with Plotly or Bokeh.
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
