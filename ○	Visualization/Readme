@@ -1,0 +1,65 @@
+EDA Visualization with Outlier Detection
+Overview
+This project involves performing Exploratory Data Analysis (EDA) on a dataset and producing insightful visualizations. The main objectives are to detect outliers using box plots and create three creative and beautiful plots that capture key insights gained from the EDA.
+
+Dataset
+The dataset used for this analysis is MachineLearningRating_v3.txt, which contains various fields related to insurance policies, vehicle information, and premiums.
+
+Requirements
+To run the provided Python script, you need the following Python packages:
+
+pandas: For data manipulation and analysis.
+matplotlib: For creating static, animated, and interactive visualizations.
+seaborn: For statistical data visualization.
+You can install these packages using pip:
+
+sh
+Copy code
+pip install pandas matplotlib seaborn
+Setup
+Clone the Repository
+
+Clone this repository to your local machine:
+
+sh
+Copy code
+git clone <repository-url>
+cd <repository-directory>
+Place the Dataset
+
+Ensure that the dataset file MachineLearningRating_v3.txt is located in the same directory as the script or update the file path in the script accordingly.
+
+Create the Plots Directory
+
+The script will save the generated plots in a directory named plots. The script includes code to create this directory if it doesn't already exist.
+
+Running the Script
+To run the script and generate the visualizations:
+
+Save the provided Python code to a file, for example, eda_visualization.py.
+
+Run the script using Python:
+
+sh
+Copy code
+python eda_visualization.py
+The script will produce the following plots and save them in the plots directory:
+
+premiums_by_cover_type.png: Box plot showing the distribution of premiums by cover type.
+trends_in_premiums.png: Line plot showing trends in premiums over time.
+vehicle_power_vs_cubic_capacity.png: Scatter plot showing the relationship between vehicle power and cubic capacity.
+Plot Descriptions
+Distribution of Premiums by Cover Type
+
+Type: Box plot
+Description: Displays the variation and outliers in premiums for different cover types.
+Trends in Premiums Over Time
+
+Type: Line plot
+Description: Shows how premiums have changed over time, with different lines for each cover type.
+Vehicle Power vs. Cubic Capacity
+
+Type: Scatter plot
+Description: Examines the relationship between vehicle power (kilowatts) and engine cubic capacity, with color coding for different vehicle types.
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
