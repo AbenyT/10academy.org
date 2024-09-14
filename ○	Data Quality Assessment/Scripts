@@ -1,0 +1,30 @@
+# Importing the necessary libraries
+import pandas as pd
+
+# Load the dataset
+# Assuming the file 'MachineLearningRating_v3.txt' is pipe-delimited ('|')
+file_path = 'MachineLearningRating_v3.txt'  # Update the path if needed
+df = pd.read_csv(file_path, delimiter='|')
+
+# Display the first few rows of the dataset (optional, to check the data structure)
+print("First 5 rows of the dataset:")
+print(df.head())
+
+# Check for missing values
+print("\nMissing Values in Each Column:")
+missing_values = df.isnull().sum()
+print(missing_values)
+
+# Optionally, show percentage of missing values
+print("\nPercentage of Missing Values in Each Column:")
+missing_percentage = (df.isnull().sum() / len(df)) * 100
+print(missing_percentage)
+
+# Save the missing values report to a file (optional)
+missing_report = pd.DataFrame({
+    'Missing Values': missing_values,
+    'Percentage Missing': missing_percentage
+})
+missing_report.to_csv('missing_values_report.csv', index=True)
+
+print("\nMissing values report has been saved as 'missing_values_report.csv'.")
