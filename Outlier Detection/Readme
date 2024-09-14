@@ -1,0 +1,117 @@
+Machine Learning Rating Analysis
+Overview
+This project involves analyzing a dataset containing insurance and vehicle information. The goal is to perform Exploratory Data Analysis (EDA), focusing on outlier detection using box plots.
+
+Dataset
+The dataset is stored in a file named MachineLearningRating_v3.txt, which contains various columns related to insurance policies, vehicles, and financial details.
+
+Data Columns
+UnderwrittenCoverID: Unique identifier for the insurance cover.
+PolicyID: Unique identifier for the insurance policy.
+TransactionMonth: Date of the transaction.
+IsVATRegistered: Indicates if VAT is registered (True/False).
+Citizenship: Citizenship of the policyholder.
+LegalType: Type of legal entity (e.g., Close Corporation).
+Title: Title of the policyholder.
+Language: Preferred language.
+Bank: Bank name.
+AccountType: Type of bank account.
+MaritalStatus: Marital status of the policyholder.
+Gender: Gender of the policyholder.
+Country: Country of the policyholder.
+Province: Province of the policyholder.
+PostalCode: Postal code.
+MainCrestaZone: Main insurance zone.
+SubCrestaZone: Sub insurance zone.
+ItemType: Type of insured item.
+mmcode: Internal code for the vehicle.
+VehicleType: Type of vehicle.
+RegistrationYear: Year of vehicle registration.
+make: Make of the vehicle.
+Model: Model of the vehicle.
+Cylinders: Number of cylinders in the engine.
+cubiccapacity: Engine cubic capacity.
+kilowatts: Engine power in kilowatts.
+bodytype: Body type of the vehicle.
+NumberOfDoors: Number of doors on the vehicle.
+VehicleIntroDate: Introduction date of the vehicle.
+CustomValueEstimate: Estimated custom value of the vehicle.
+AlarmImmobiliser: Indicates if an alarm/immobiliser is installed (Yes/No).
+TrackingDevice: Indicates if a tracking device is installed (Yes/No).
+CapitalOutstanding: Outstanding capital.
+NewVehicle: Indicates if the vehicle is new (Yes/No).
+WrittenOff: Indicates if the vehicle is written off (Yes/No).
+Rebuilt: Indicates if the vehicle is rebuilt (Yes/No).
+Converted: Indicates if the vehicle is converted (Yes/No).
+CrossBorder: Indicates if the vehicle crosses borders (Yes/No).
+NumberOfVehiclesInFleet: Number of vehicles in the fleet.
+SumInsured: Total sum insured.
+TermFrequency: Frequency of the insurance term.
+CalculatedPremiumPerTerm: Calculated premium per term.
+ExcessSelected: Selected excess amount.
+CoverCategory: Category of insurance cover.
+CoverType: Type of insurance cover.
+CoverGroup: Group of insurance cover.
+Section: Section of the insurance policy.
+Product: Product type.
+StatutoryClass: Statutory class of the insurance.
+StatutoryRiskType: Statutory risk type.
+TotalPremium: Total premium amount.
+TotalClaims: Total number of claims.
+Outlier Detection
+The provided script includes a section for detecting outliers using box plots. Box plots are used to visualize the distribution of numerical data and highlight any outliers.
+
+Python Script
+The Python script performs the following tasks:
+
+Load the Dataset: Reads the dataset from MachineLearningRating_v3.txt.
+Preprocess Data: Converts the TransactionMonth column to datetime format.
+Outlier Detection: Creates box plots for numerical columns to detect outliers.
+Script
+python
+Copy code
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset
+file_path = 'MachineLearningRating_v3.txt'
+data = pd.read_csv(file_path, delimiter='|')
+
+# Convert 'TransactionMonth' to datetime
+data['TransactionMonth'] = pd.to_datetime(data['TransactionMonth'])
+
+# List of numerical columns for outlier detection
+numerical_columns = [
+    'RegistrationYear', 'cubiccapacity', 'kilowatts', 'CustomValueEstimate', 
+    'CapitalOutstanding', 'SumInsured', 'CalculatedPremiumPerTerm', 'TotalPremium'
+]
+
+# Initialize the figure for box plots
+plt.figure(figsize=(14, 10))
+
+# Plot box plots for each numerical column to detect outliers
+for i, column in enumerate(numerical_columns, 1):
+    plt.subplot(3, 3, i)
+    sns.boxplot(x=data[column])
+    plt.title(f'Box Plot of {column}')
+    plt.xlabel(column)
+
+# Adjust layout to prevent overlap
+plt.tight_layout()
+
+# Show the plots
+plt.show()
+Requirements
+Pandas: pip install pandas
+Matplotlib: pip install matplotlib
+Seaborn: pip install seaborn
+Usage
+Ensure the dataset file MachineLearningRating_v3.txt is in the same directory as the script.
+Run the script using Python.
+sh
+Copy code
+python your_script_name.py
+Review the generated box plots to identify any outliers in the numerical data.
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
