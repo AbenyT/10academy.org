@@ -1,0 +1,54 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset
+file_path = 'MachineLearningRating_v3.txt'  # Replace with your file path
+data = pd.read_csv(file_path, delimiter='|')
+
+# Display the first few rows of the dataset
+print(data.head())
+
+# Convert columns to appropriate data types
+data['TransactionMonth'] = pd.to_datetime(data['TransactionMonth'])
+data['SumInsured'] = pd.to_numeric(data['SumInsured'], errors='coerce')
+data['TotalPremium'] = pd.to_numeric(data['TotalPremium'], errors='coerce')
+
+# Trends Over Geography
+# Filter data for relevant columns
+geography_data = data[['Country', 'Province', 'CoverType', 'TotalPremium', 'make', 'TransactionMonth']]
+
+# Compare insurance cover type over time
+plt.figure(figsize=(12, 6))
+sns.countplot(data=geography_data, x='TransactionMonth', hue='CoverType')
+plt.title('Insurance Cover Type Trends Over Time')
+plt.xticks(rotation=45)
+plt.show()
+
+# Compare premium trends by province
+plt.figure(figsize=(12, 6))
+sns.lineplot(data=geography_data, x='TransactionMonth', y='TotalPremium', hue='Province', marker='o')
+plt.title('Premium Trends by Province Over Time')
+plt.xticks(rotation=45)
+plt.show()
+
+# Compare auto makes and their average premiums
+auto_make_premium = geography_data.groupby('make')['TotalPremium'].mean().sort_values()
+plt.figure(figsize=(12, 6))
+auto_make_premium.plot(kind='bar')
+plt.title('Average Premium by Auto Make')
+plt.xlabel('Auto Make')
+plt.ylabel('Average Premium')
+plt.xticks(rotation=90)
+plt.show()
+
+# Compare insurance cover types by geography
+cover_type_geo = geography_data.groupby(['Country', 'Province', 'CoverType']).size().unstack().fillna(0)
+plt.figure(figsize=(14, 7))
+cover_type_geo.plot(kind='bar', stacked=True)
+plt.title('Insurance Cover Types by Geography')
+plt.xlabel('Country and Province')
+plt.ylabel('Count')
+plt.xticks(rotation=90)
+plt.show()
+
