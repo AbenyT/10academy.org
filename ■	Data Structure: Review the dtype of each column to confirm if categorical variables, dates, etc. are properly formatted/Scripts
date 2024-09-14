@@ -1,0 +1,45 @@
+import pandas as pd
+
+# Load the dataset
+file_path = "MachineLearningRating_v3.txt"
+df = pd.read_csv(file_path, delimiter='|')
+
+# Review the data structure
+print("Data Types of Each Column:")
+print(df.dtypes)
+
+# Identify possible categorical columns
+categorical_columns = df.select_dtypes(include=['object']).columns
+print("\nPossible Categorical Columns:")
+print(categorical_columns)
+
+# Check for date columns and convert if necessary
+# Replace 'TransactionMonth' with any other columns that should be dates
+if 'TransactionMonth' in df.columns:
+    df['TransactionMonth'] = pd.to_datetime(df['TransactionMonth'], errors='coerce')
+    print("\nTransactionMonth column converted to datetime.")
+    
+# Display any changes in data types
+print("\nUpdated Data Types of Each Column:")
+print(df.dtypes)
+
+# Check for unique values in categorical columns to validate if they should remain as object type
+for col in categorical_columns:
+    print(f"\nColumn: {col}")
+    print(f"Unique values: {df[col].nunique()}")
+    print(df[col].unique())
+
+# Check for any missing values
+print("\nMissing values in each column:")
+print(df.isnull().sum())
+
+# If needed, you can further categorize specific columns
+# For example, you can convert 'IsVATRegistered' to a boolean
+if 'IsVATRegistered' in df.columns:
+    df['IsVATRegistered'] = df['IsVATRegistered'].astype('bool')
+    print("\nIsVATRegistered column converted to boolean.")
+
+# Save the cleaned dataset to a new CSV file (optional)
+df.to_csv("cleaned_MachineLearningRating_v3.csv", index=False)
+
+print("\nData structure review completed and data types updated where necessary.")
