@@ -1,0 +1,109 @@
+EDA on Insurance Dataset
+Overview
+This project performs Exploratory Data Analysis (EDA) on an insurance dataset to analyze trends and compare various aspects such as insurance cover types, premiums, and auto makes. The analysis includes visualizations of data trends over time, geographical comparisons, and insurance coverage types.
+
+Prerequisites
+Before running the Python script, ensure you have the following libraries installed:
+
+pandas
+matplotlib
+seaborn
+You can install these libraries using pip:
+
+bash
+Copy code
+pip install pandas matplotlib seaborn
+Dataset
+The dataset is expected to be in a text file named MachineLearningRating_v3.txt with pipe (|) as the delimiter. The file should contain the following columns:
+
+UnderwrittenCoverID
+PolicyID
+TransactionMonth
+IsVATRegistered
+Citizenship
+LegalType
+Title
+Language
+Bank
+AccountType
+MaritalStatus
+Gender
+Country
+Province
+PostalCode
+MainCrestaZone
+SubCrestaZone
+ItemType
+mmcode
+VehicleType
+RegistrationYear
+make
+Model
+Cylinders
+cubiccapacity
+kilowatts
+bodytype
+NumberOfDoors
+VehicleIntroDate
+CustomValueEstimate
+AlarmImmobiliser
+TrackingDevice
+CapitalOutstanding
+NewVehicle
+WrittenOff
+Rebuilt
+Converted
+CrossBorder
+NumberOfVehiclesInFleet
+SumInsured
+TermFrequency
+CalculatedPremiumPerTerm
+ExcessSelected
+CoverCategory
+CoverType
+CoverGroup
+Section
+Product
+StatutoryClass
+StatutoryRiskType
+TotalPremium
+TotalClaims
+Usage
+Clone the Repository
+
+Clone this repository to your local machine:
+
+bash
+Copy code
+git clone <repository-url>
+Navigate to the Project Directory
+
+bash
+Copy code
+cd <project-directory>
+Run the Python Script
+
+Ensure that the dataset file MachineLearningRating_v3.txt is in the same directory as the script or update the file_path variable in the script with the correct path. Then execute the Python script:
+
+bash
+Copy code
+python eda_script.py
+The script will generate various visualizations and display them.
+
+Script Explanation
+The Python script performs the following tasks:
+
+Load the Dataset: Reads the dataset from a text file using pandas.
+Data Preprocessing: Converts date and numerical columns to appropriate data types.
+Data Analysis:
+Insurance Cover Type Trends Over Time: Displays a count plot of insurance cover types over time.
+Premium Trends by Province: Shows a line plot of premium trends by province over time.
+Average Premium by Auto Make: Visualizes average premiums for different auto makes using a bar plot.
+Insurance Cover Types by Geography: Illustrates the distribution of cover types across countries and provinces with a stacked bar plot.
+Customization
+You can customize the script to fit your specific needs:
+
+Update file paths or column names if your dataset differs.
+Modify or add additional visualizations based on your analysis requirements.
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
