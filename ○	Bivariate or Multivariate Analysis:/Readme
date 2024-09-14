@@ -1,0 +1,49 @@
+# Bivariate and Multivariate Analysis of Machine Learning Dataset
+
+This repository contains a Python script that performs bivariate and multivariate analysis on the dataset `MachineLearningRating_v3.txt`. The analysis focuses on exploring the relationships between `TotalPremium` and `TotalClaims` as a function of `PostalCode`, using scatter plots and correlation matrices.
+
+## Dataset
+
+- **Dataset Name**: `MachineLearningRating_v3.txt`
+- **Delimiter**: Pipe (`|`)
+
+### Column Types
+- **Numerical Columns**: `TotalPremium`, `TotalClaims`
+- **Categorical Column**: `PostalCode`
+
+## Prerequisites
+
+Make sure you have the following Python libraries installed:
+
+```bash
+pip install pandas matplotlib seaborn
+Libraries Used:
+pandas: To load and manipulate the dataset.
+matplotlib: To create plots.
+seaborn: To style and generate scatter plots and correlation matrices.
+Project Structure
+bivariate_multivariate_analysis.py: The main Python script that performs the analysis.
+MachineLearningRating_v3.txt: The dataset used for analysis (this file should be in the same directory as the script).
+How to Run the Script
+Download the dataset: Place MachineLearningRating_v3.txt in the same folder as the script.
+
+Run the script:python bivariate_multivariate_analysis.py
+View Output: The script will generate scatter plots and a correlation matrix and display them one by one.
+
+Example Usagepython bivariate_multivariate_analysis.py
+After running, you will see:
+
+Scatter Plot: Relationship between TotalPremium and TotalClaims, colored by PostalCode.
+Correlation Matrix: A heatmap showing the correlation between TotalPremium and TotalClaims.
+Functions
+plot_scatter(df, x_col, y_col, hue_col): Plots a scatter plot of x_col vs y_col, colored by hue_col.
+plot_correlation_matrix(df, cols): Plots a heatmap of the correlation matrix for specified numerical columns.
+Customization
+You can modify the appearance of the plots by adjusting parameters in seaborn.scatterplot() and seaborn.heatmap() in the script. For example, change color palettes or add additional visual elements.
+
+Future Enhancements
+Add interaction to scatter plots (e.g., using Plotly).
+Explore additional relationships or include more variables in the analysis.
+Implement statistical tests to validate observed relationships.
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
