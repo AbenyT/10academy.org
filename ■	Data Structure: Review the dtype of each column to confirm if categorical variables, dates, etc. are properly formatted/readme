@@ -1,0 +1,94 @@
+Overview
+This Python script is designed to review and clean the structure of a dataset, focusing on ensuring the correct formatting of data types, such as categorical variables, date columns, and boolean fields. It also checks for missing values and allows for optional data type conversions. The script is flexible and can be modified to accommodate different datasets.
+
+Prerequisites
+1. Python Version
+Python 3.x or later
+2. Required Libraries
+Ensure you have the following libraries installed in your environment:
+
+pandas
+You can install the necessary libraries using:
+
+bash
+Copy code
+pip install pandas
+Dataset
+The script is designed to work with a dataset called MachineLearningRating_v3.txt, which should be stored in the same directory as the script. This dataset is assumed to be delimited by a pipe (|).
+
+You can modify the file path or delimiter in the script if necessary.
+
+Features
+Data Type Review:
+
+The script reviews the data types (dtype) of each column in the dataset to confirm if they are appropriately formatted (e.g., categorical variables, dates).
+Categorical Variables Identification:
+
+It identifies possible categorical columns based on the object data type and prints the unique values for those columns.
+Date Formatting:
+
+The script looks for a TransactionMonth column and converts it to a datetime format.
+Missing Values Check:
+
+It checks for missing values in each column and prints the count of missing values.
+Optional Type Conversion:
+
+If necessary, specific columns (such as IsVATRegistered) are converted to boolean values.
+Save Cleaned Data:
+
+After reviewing and cleaning, the script can save the updated dataset to a new file called cleaned_MachineLearningRating_v3.csv.
+How to Use
+1. Place the Dataset
+Ensure the dataset (MachineLearningRating_v3.txt) is in the same directory as this script.
+2. Run the Script
+Run the Python script as follows:
+
+bash
+Copy code
+python data_structure_review.py
+3. Output
+The script will print the following information:
+
+Data types of each column before and after any changes.
+Potential categorical columns and their unique values.
+Information on date columns (such as TransactionMonth) and their conversion.
+Count of missing values in each column.
+If the script is instructed to do so, it will save a cleaned version of the dataset as cleaned_MachineLearningRating_v3.csv.
+
+Customization
+1. Modify Date Columns:
+If you have other date columns aside from TransactionMonth, you can add them to the script by editing the section:
+python
+Copy code
+if 'TransactionMonth' in df.columns:
+    df['TransactionMonth'] = pd.to_datetime(df['TransactionMonth'], errors='coerce')
+2. Adjust Column Conversions:
+If you need to convert other columns (e.g., from string to boolean or other data types), add the necessary conversions in the script like:
+python
+Copy code
+df['ColumnName'] = df['ColumnName'].astype('desired_dtype')
+Example
+Initial Data Types:
+vbnet
+Copy code
+Data Types of Each Column:
+TransactionMonth         object
+IsVATRegistered          object
+ProductID                int64
+...
+Updated Data Types:
+go
+Copy code
+Updated Data Types of Each Column:
+TransactionMonth         datetime64[ns]
+IsVATRegistered          bool
+ProductID                int64
+...
+Missing Values:
+sql
+Copy code
+Missing values in each column:
+TransactionMonth          3
+IsVATRegistered           0
+ProductID                 0
+...
