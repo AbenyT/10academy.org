@@ -1,0 +1,112 @@
+# Machine Learning Rating Data Analysis
+
+This project performs Exploratory Data Analysis (EDA) on a dataset containing insurance policy and vehicle-related data. The analysis includes data summarization, descriptive statistics, and calculating variability for numerical features such as `TotalPremium`, `TotalClaims`, and other key attributes.
+
+## Project Structure
+
+- `MachineLearningRating_v3.txt`: The dataset file that contains insurance and vehicle data.
+- `eda_analysis.py`: The Python script that performs EDA, including descriptive statistics and variability calculations.
+
+## Requirements
+
+Ensure you have the following installed:
+
+- Python 3.6+
+- Pandas library
+
+You can install the required libraries using pip:
+
+```bash
+pip install pandas
+Dataset
+The dataset is a pipe-delimited text file (MachineLearningRating_v3.txt) with the following columns:
+
+UnderwrittenCoverID
+PolicyID
+TransactionMonth
+IsVATRegistered
+Citizenship
+LegalType
+Title
+Language
+Bank
+AccountType
+MaritalStatus
+Gender
+Country
+Province
+PostalCode
+MainCrestaZone
+SubCrestaZone
+ItemType
+mmcode
+VehicleType
+RegistrationYear
+make
+Model
+Cylinders
+cubiccapacity
+kilowatts
+bodytype
+NumberOfDoors
+VehicleIntroDate
+CustomValueEstimate
+AlarmImmobiliser
+TrackingDevice
+CapitalOutstanding
+NewVehicle
+WrittenOff
+Rebuilt
+Converted
+CrossBorder
+NumberOfVehiclesInFleet
+SumInsured
+TermFrequency
+CalculatedPremiumPerTerm
+ExcessSelected
+CoverCategory
+CoverType
+CoverGroup
+Section
+Product
+StatutoryClass
+StatutoryRiskType
+TotalPremium
+TotalClaims
+Script Details
+The eda_analysis.py script performs the following:
+
+Data Loading:
+
+Loads the dataset from MachineLearningRating_v3.txt.
+Data Preview:
+
+Displays the first few rows to understand the structure of the dataset.
+Data Summary:
+
+Outputs information about the dataset, including the data types and non-null counts.
+Descriptive Statistics:
+
+Provides descriptive statistics such as count, mean, min, max, and quartiles for numerical columns (TotalPremium, TotalClaims, etc.).
+Variability:
+
+Calculates the variance and standard deviation for numerical columns.
+Missing Values:
+
+Identifies any missing values in the dataset.
+Usage
+Run the Python Script: To perform EDA, simply run the following command in your terminal or command prompt:Dataset Preview:
+   UnderwrittenCoverID  PolicyID       TransactionMonth  IsVATRegistered  ...
+0              145249     12827  2015-03-01 00:00:00              True  ...
+
+Data Summary:
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 10 entries, 0 to 9
+Data columns (total 49 columns):
+...
+Descriptive Statistics for Numerical Features:
+        TotalPremium  TotalClaims  SumInsured  CalculatedPremiumPerTerm  ExcessSelected
+count      10.000000     10.000000   10.000000                10.000000       10.000000
+mean      150.248474      0.000000  100.00000                 56.161560        0.125874
+std        55.178934      0.000000   45.36101                 12.548379        0.005121
+...
