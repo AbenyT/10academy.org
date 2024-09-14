@@ -1,0 +1,48 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset
+file_path = 'MachineLearningRating_v3.txt'
+data = pd.read_csv(file_path, delimiter='|')
+
+# Convert 'TransactionMonth' to datetime
+data['TransactionMonth'] = pd.to_datetime(data['TransactionMonth'])
+
+# Create a directory for saving plots if it doesn't exist
+import os
+if not os.path.exists('plots'):
+    os.makedirs('plots')
+
+# Plot 1: Distribution of Premiums by Cover Type
+plt.figure(figsize=(12, 8))
+sns.boxplot(data=data, x='CoverType', y='TotalPremium', palette='viridis')
+plt.title('Distribution of Premiums by Cover Type')
+plt.xticks(rotation=45)
+plt.xlabel('Cover Type')
+plt.ylabel('Total Premium')
+plt.tight_layout()
+plt.savefig('plots/premiums_by_cover_type.png')
+plt.show()
+
+# Plot 2: Trends in Premiums Over Time
+plt.figure(figsize=(12, 8))
+sns.lineplot(data=data, x='TransactionMonth', y='TotalPremium', hue='CoverType', palette='tab10')
+plt.title('Trends in Premiums Over Time')
+plt.xlabel('Transaction Month')
+plt.ylabel('Total Premium')
+plt.legend(title='Cover Type')
+plt.tight_layout()
+plt.savefig('plots/trends_in_premiums.png')
+plt.show()
+
+# Plot 3: Vehicle Power vs. Cubic Capacity
+plt.figure(figsize=(12, 8))
+sns.scatterplot(data=data, x='cubiccapacity', y='kilowatts', hue='VehicleType', palette='Set2', alpha=0.7)
+plt.title('Vehicle Power vs. Cubic Capacity')
+plt.xlabel('Cubic Capacity')
+plt.ylabel('Power (Kilowatts)')
+plt.legend(title='Vehicle Type')
+plt.tight_layout()
+plt.savefig('plots/vehicle_power_vs_cubic_capacity.png')
+plt.show()
