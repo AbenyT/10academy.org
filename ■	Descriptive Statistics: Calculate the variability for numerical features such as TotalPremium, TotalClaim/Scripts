@@ -1,0 +1,28 @@
+import pandas as pd
+
+# Load the dataset
+df = pd.read_csv('MachineLearningRating_v3.txt', delimiter="|")
+
+# Display the first few rows of the dataset to understand its structure
+print("Dataset Preview:")
+print(df.head())
+
+# Data Summarization
+print("\nData Summary:")
+print(df.info())
+
+# Descriptive Statistics for numerical columns
+numerical_columns = ['TotalPremium', 'TotalClaims', 'SumInsured', 'CalculatedPremiumPerTerm', 'ExcessSelected']
+print("\nDescriptive Statistics for Numerical Features:")
+print(df[numerical_columns].describe())
+
+# Calculating variability (variance and standard deviation)
+print("\nVariance of Numerical Features:")
+print(df[numerical_columns].var())
+
+print("\nStandard Deviation of Numerical Features:")
+print(df[numerical_columns].std())
+
+# Checking for missing values
+print("\nMissing Values:")
+print(df.isnull().sum())
