@@ -1,0 +1,38 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset
+file_path = 'MachineLearningRating_v3.txt'
+df = pd.read_csv(file_path, delimiter='|')
+
+# Data Preparation
+# Convert 'PostalCode' to a categorical variable for analysis
+df['PostalCode'] = df['PostalCode'].astype('category')
+
+# Extracting numerical columns for correlation
+numerical_cols = ['TotalPremium', 'TotalClaims']
+
+# Ensure no NaN values in these columns for analysis
+df = df.dropna(subset=numerical_cols)
+
+# Scatter Plot of TotalPremium vs TotalClaims
+plt.figure(figsize=(12, 6))
+sns.scatterplot(data=df, x='TotalPremium', y='TotalClaims', hue='PostalCode', palette='viridis', alpha=0.7)
+plt.title('Scatter Plot of TotalPremium vs TotalClaims by PostalCode')
+plt.xlabel('TotalPremium')
+plt.ylabel('TotalClaims')
+plt.legend(title='PostalCode', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# Correlation Matrix
+# Compute the correlation matrix
+correlation_matrix = df[numerical_cols].corr()
+
+# Plot the correlation matrix
+plt.figure(figsize=(8, 6))
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1, center=0, linewidths=0.5)
+plt.title('Correlation Matrix of TotalPremium and TotalClaims')
+plt.show()
