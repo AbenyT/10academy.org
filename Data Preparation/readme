@@ -1,0 +1,42 @@
+This project analyzes an insurance dataset, focusing on missing data handling, data types, and displaying initial data information.
+
+Requirements
+To run this code, you will need the following Python packages:
+
+pandas
+numpy
+scikit-learn
+You can install them using pip:
+
+bash
+Copy code
+pip install pandas numpy scikit-learn
+Files
+insurance_data.csv: The dataset containing insurance-related information.
+main.py: The Python script to load and preprocess the data.
+Steps
+Loading the Data: The dataset insurance_data.csv is loaded into a pandas DataFrame.
+
+Data Shape: The shape of the DataFrame (rows, columns) is printed to give an overview of the dataset size.
+
+Missing Values: The number of missing values in each column is printed to understand if any data cleaning is required.
+
+Data Types: The data types of the columns are displayed, helping to identify which columns are numerical and which are categorical.
+
+Displaying the First Few Rows: The first few rows of the dataset are printed for an initial inspection.
+
+Usage
+To run the code:
+
+Clone the repository.
+Make sure you have the insurance_data.csv file in the same directory as the Python script.
+Run the following command:
+bash
+Copy code
+python main.py
+This will output:
+
+The shape of the data.
+A summary of missing values.
+The data types of each column.
+The first few rows of the dataset for a quick look at the data.
