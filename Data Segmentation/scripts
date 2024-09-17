@@ -1,0 +1,13 @@
+# Analyze the distribution of the 'Province' and 'Gender' columns to determine how to split the data
+
+# Plot the distribution of 'Province'
+sns.countplot(x='Province', data=df)
+plt.title('Distribution of Province')
+plt.show()
+
+# Plot the distribution of 'Gender'
+sns.countplot(x='Gender', data=df)
+plt.title('Distribution of Gender')
+plt.show()
+
+print("Distribution plots generated.")
