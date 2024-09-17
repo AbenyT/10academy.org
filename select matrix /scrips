@@ -1,0 +1,25 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Read the CSV file
+df = pd.read_csv('insurance_data.csv')
+
+# Display the first few rows and basic information about the dataset
+print(df.head())
+print("\
+Dataset Information:")
+print(df.info())
+
+# Display summary statistics
+print("\
+Summary Statistics:")
+print(df.describe())
+
+# Display unique values in each column
+print("\
+Unique values in each column:")
+for column in df.columns:
+    print(f"{column}: {df[column].nunique()}")
+
+print("Data loaded and initial analysis complete.")
