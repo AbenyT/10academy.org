@@ -18,3 +18,25 @@ print(df.dtypes)
 print("\
 First few rows:")
 print(df.head())
+# Feature Engineering: Create new features (e.g., interaction terms, etc.)
+# For demonstration, let's create a simple interaction feature between Province and Gender
+
+df['Province_Gender'] = df['Province'] + '_' + df['Gender']
+
+# Encoding Categorical Data: Use Label Encoding for simplicity
+label_encoder = LabelEncoder()
+df['Province'] = label_encoder.fit_transform(df['Province'])
+df['Gender'] = label_encoder.fit_transform(df['Gender'])
+df['Province_Gender'] = label_encoder.fit_transform(df['Province_Gender'])
+
+# Display the transformed data
+print("\
+Transformed Data:")
+print(df.head())
+
+# Train-Test Split: 80% train, 20% test
+train_df, test_df = train_test_split(df, test_size=0.2, random_state=42)
+
+print("\
+Train set shape:", train_df.shape)
+print("Test set shape:", test_df.shape)
