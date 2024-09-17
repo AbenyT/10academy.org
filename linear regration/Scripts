@@ -1,0 +1,43 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, precision_score, recall_score, f1_score
+
+# Load the dataset
+file_path = '/mnt/data/transformed_data.xlsx'
+df = pd.read_excel(file_path)
+
+# Defining the feature set and target variable
+X = df[['Province', 'Gender', 'Province_Gender']]
+y = df['Claimed']
+
+# Splitting the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Initializing and training the linear regression model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Making predictions on the test set
+y_pred = model.predict(X_test)
+
+# Since this is a regression model, we round the predictions to convert them to binary values (0 or 1)
+y_pred_binary = [1 if pred >= 0.5 else 0 for pred in y_pred]
+
+# Evaluating the model using regression metrics
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+# Evaluating the model using classification metrics
+accuracy = accuracy_score(y_test, y_pred_binary)
+precision = precision_score(y_test, y_pred_binary)
+recall = recall_score(y_test, y_pred_binary)
+f1 = f1_score(y_test, y_pred_binary)
+
+# Printing the evaluation metrics
+print(f"Mean Squared Error (MSE): {mse}")
+print(f"R-squared (R²) score: {r2}")
+print(f"Accuracy: {accuracy}")
+print(f"Precision: {precision}")
+print(f"Recall: {recall}")
+print(f"F1-score: {f1}")
