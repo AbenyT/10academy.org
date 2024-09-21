@@ -1,0 +1,50 @@
+# Import necessary libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the datasets (assuming 'train.csv' and 'store.csv' have been loaded and merged properly)
+train_data = pd.read_csv('/mnt/data/train.csv')
+store_data = pd.read_csv('/mnt/data/store.csv')
+
+# Merge the training data with the store data on 'Store' column
+train_data_with_store = pd.merge(train_data, store_data, on='Store')
+
+# Convert 'Date' column to datetime format for easier manipulation
+train_data_with_store['Date'] = pd.to_datetime(train_data_with_store['Date'])
+
+# Extract the day of the week and the hour to analyze customer behavior
+train_data_with_store['DayOfWeek'] = train_data_with_store['Date'].dt.dayofweek
+train_data_with_store['Month'] = train_data_with_store['Date'].dt.month
+
+# Filter out closed stores (where Open == 0)
+open_stores = train_data_with_store[train_data_with_store['Open'] == 1]
+
+# Group by DayOfWeek and Store Open to analyze customer trends during opening and closing times
+customer_behavior_by_day = open_stores.groupby(['DayOfWeek', 'Store'])['Customers'].mean().reset_index()
+
+# Plotting the average number of customers per day of the week
+plt.figure(figsize=(10, 6))
+sns.lineplot(data=customer_behavior_by_day, x='DayOfWeek', y='Customers', hue='Store', palette='Set2', marker="o")
+plt.title('Customer Behavior During Store Opening Times (by Day of the Week)')
+plt.xlabel('Day of the Week (0=Monday, 6=Sunday)')
+plt.ylabel('Average Number of Customers')
+plt.legend(title='Store', loc='upper right')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# Group by Month and Store to analyze customer trends by month (seasonality effect)
+customer_behavior_by_month = open_stores.groupby(['Month', 'Store'])['Customers'].mean().reset_index()
+
+# Plotting the average number of customers per month
+plt.figure(figsize=(10, 6))
+sns.lineplot(data=customer_behavior_by_month, x='Month', y='Customers', hue='Store', palette='Set1', marker="o")
+plt.title('Customer Behavior by Month (Seasonal Trends)')
+plt.xlabel('Month')
+plt.ylabel('Average Number of Customers')
+plt.xticks(range(1, 13))
+plt.legend(title='Store', loc='upper right')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
