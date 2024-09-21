@@ -1,0 +1,40 @@
+# Import necessary libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset (assuming the train.csv has been loaded)
+train_data = pd.read_csv('/mnt/data/train.csv')
+
+# Convert 'Date' column to datetime if it's in string format
+train_data['Date'] = pd.to_datetime(train_data['Date'])
+
+# Group data by Promo to get average sales and customers during promo and non-promo periods
+promo_sales = train_data.groupby('Promo')['Sales'].mean()
+promo_customers = train_data.groupby('Promo')['Customers'].mean()
+
+# Print the results
+print("Average Sales during Promo (1): ", promo_sales[1])
+print("Average Sales without Promo (0): ", promo_sales[0])
+
+print("Average Customers during Promo (1): ", promo_customers[1])
+print("Average Customers without Promo (0): ", promo_customers[0])
+
+# For visualization: Plot the sales and customers during promotion and non-promotion periods
+fig, axs = plt.subplots(1, 2, figsize=(12, 5))
+
+# Plot for Sales
+sns.barplot(x=['No Promo', 'Promo'], y=[promo_sales[0], promo_sales[1]], ax=axs[0])
+axs[0].set_title('Average Sales during Promotion')
+axs[0].set_ylabel('Sales')
+
+# Plot for Customers
+sns.barplot(x=['No Promo', 'Promo'], y=[promo_customers[0], promo_customers[1]], ax=axs[1])
+axs[1].set_title('Average Customers during Promotion')
+axs[1].set_ylabel('Customers')
+
+# Adjust the layout for better visibility
+plt.tight_layout()
+
+# Show the plots
+plt.show()
