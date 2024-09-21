@@ -1,0 +1,44 @@
+# Import necessary libraries
+import pandas as pd
+
+# Load the datasets (assuming 'train.csv' and 'store.csv' have been loaded and merged properly)
+train_data = pd.read_csv('/mnt/data/train.csv')
+store_data = pd.read_csv('/mnt/data/store.csv')
+
+# Merge the training data with the store data on 'Store' column
+train_data_with_store = pd.merge(train_data, store_data, on='Store')
+
+# Group data by 'Store' and 'Promo' to analyze sales performance during promotion and non-promotion periods
+store_promo_sales = train_data_with_store.groupby(['Store', 'Promo'])['Sales'].mean().reset_index()
+
+# Pivot the data to compare sales with and without promotions for each store
+store_promo_effectiveness = store_promo_sales.pivot(index='Store', columns='Promo', values='Sales')
+
+# Calculate promo effectiveness as the difference in sales during promo and non-promo periods
+store_promo_effectiveness['PromoEffectiveness'] = store_promo_effectiveness[1] - store_promo_effectiveness[0]
+
+# Sort stores by the effectiveness of the promotions
+store_promo_effectiveness_sorted = store_promo_effectiveness.sort_values(by='PromoEffectiveness', ascending=False)
+
+# Display the sorted promo effectiveness for all stores
+print("Promo Effectiveness for All Stores:")
+print(store_promo_effectiveness_sorted)
+
+# Get the top 10 stores where promotions have the greatest impact on sales
+top_stores_for_promos = store_promo_effectiveness_sorted.head(10)
+print("Top 10 stores where promotions have the greatest impact on sales:")
+print(top_stores_for_promos)
+
+# Visualizing the top stores for promo effectiveness
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Plotting Promo Effectiveness for the Top 10 Stores
+plt.figure(figsize=(10, 6))
+sns.barplot(x=top_stores_for_promos.index, y=top_stores_for_promos['PromoEffectiveness'], palette='Blues_d')
+plt.title('Top 10 Stores with Highest Promo Effectiveness')
+plt.xlabel('Store')
+plt.ylabel('Sales Increase Due to Promo')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
