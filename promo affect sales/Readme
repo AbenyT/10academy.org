@@ -1,0 +1,38 @@
+Sales Analysis with Promotions
+
+This Python script analyzes sales data to compare average sales and customer counts during promotional and non-promotional periods. It utilizes the pandas and seaborn libraries for data manipulation and visualization.
+
+Requirements:
+
+Python 3.x
+pandas (pip install pandas)
+matplotlib (pip install matplotlib)
+seaborn (pip install seaborn)
+Instructions:
+
+Data Preparation:
+
+Replace /mnt/data/train.csv with the actual path to your CSV file containing sales data. Ensure the file has columns named 'Date', 'Sales', and 'Promo' (where 'Promo' indicates whether a promotion was active: 1 for promo, 0 for no promo).
+If the 'Date' column is not in datetime format, modify the code to convert it using pd.to_datetime.
+Run the Script:
+
+Save the code as a Python file (e.g., sales_analysis.py).
+Execute the script from your terminal using python sales_analysis.py.
+Output:
+
+The script will print average sales and customer counts for both promo and non-promo periods.
+Two bar charts will be displayed, illustrating the average sales and customer counts during promotions and without promotions.
+Explanation:
+
+Imports: The code imports necessary libraries for data manipulation (pandas) and visualization (matplotlib, seaborn).
+Data Loading: The train_data DataFrame is loaded from the specified CSV file.
+Date Conversion: (Optional) If the 'Date' column is a string, it's converted to datetime format for further analysis.
+Grouping and Analysis: The script groups the data by the 'Promo' column to calculate the mean (average) sales and customer counts for promo and non-promo periods. The results are stored in promo_sales and promo_customers dictionaries.
+Printing Results: The script prints the average sales and customer counts for both promotional and non-promotional periods for better understanding.
+Visualization:
+A figure with two subplots is created using plt.subplots.
+Sales data is visualized using a bar chart from seaborn. The chart title and labels are set for clarity.
+Similarly, a separate bar chart is created for customer counts.
+Layout adjustments are made using plt.tight_layout to ensure a visually appealing presentation.
+Finally, the generated plots are displayed using plt.show.
+This script provides insights into the effectiveness of promotions by comparing sales and customer activity during promotional and non-promotional periods. Feel free to modify the script to further explore the data as needed.
