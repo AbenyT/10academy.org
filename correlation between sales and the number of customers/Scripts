@@ -1,0 +1,33 @@
+# Import necessary libraries
+import pandas as pd
+
+# Load the datasets (assuming CSV format)
+train_data = pd.read_csv('/path/to/train.csv')
+store_data = pd.read_csv('/path/to/store.csv')
+
+# Convert 'Date' column to datetime if it's in string format
+train_data['Date'] = pd.to_datetime(train_data['Date'])
+
+# Merge store data with training data (if you need store-specific information)
+train_data_with_store = pd.merge(train_data, store_data, on='Store', how='left')
+
+# Check for missing values in the 'Customers' or 'Sales' columns and handle them
+train_data_with_store = train_data_with_store.dropna(subset=['Sales', 'Customers'])
+
+# Calculate the correlation between Sales and Customers
+sales_customers_correlation = train_data_with_store[['Sales', 'Customers']].corr()
+
+# Print the correlation coefficient
+print("Correlation between Sales and Customers:")
+print(sales_customers_correlation)
+
+# Visualizing the correlation with a scatter plot
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(8, 6))
+plt.scatter(train_data_with_store['Customers'], train_data_with_store['Sales'], alpha=0.5)
+plt.title('Scatter Plot of Sales vs Customers')
+plt.xlabel('Number of Customers')
+plt.ylabel('Sales')
+plt.grid(True)
+plt.show()
