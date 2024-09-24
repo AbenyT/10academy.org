@@ -1,0 +1,113 @@
+Store Sales Prediction API
+This project is a REST API built using FastAPI to serve a machine learning model for predicting store sales. The model is trained on historical sales data and deployed to make real-time predictions. This API can be used by sending input features such as the day of the week, date, holidays, and other information, and it returns the predicted sales for a given day.
+
+Features
+Pre-trained Random Forest regression model for store sales prediction.
+FastAPI used for creating the REST API, enabling real-time predictions.
+Endpoints to accept input data and return predictions.
+Model is loaded from serialized .pkl files.
+Easy deployment with Docker or cloud platforms.
+Requirements
+Python 3.8+
+FastAPI for the API framework
+Uvicorn for the ASGI server
+joblib to load the trained machine learning model
+scikit-learn for preprocessing and model building
+pandas for handling data
+Installation
+Clone the repository:
+git clone https://github.com/your-username/store-sales-prediction-api.git
+cd store-sales-prediction-api
+Install the required dependencies:
+pip install -r requirements.txt
+Place the pre-trained model (.pkl file) in the project directory (or provide the correct path to your model in the FastAPI code).
+Run the API server locally:
+
+uvicorn app:app --reload
+This will start the API at http://127.0.0.1:8000.
+
+API Endpoints
+Root Endpoint
+URL: /
+
+Method: GET
+
+Response: Returns a simple message indicating that the API is running.
+
+Example response:
+
+json
+{
+  "message": "Store Sales Prediction API is running"
+}
+Prediction Endpoint
+URL: /predict
+
+Method: POST
+
+Input: JSON object with the following fields:
+
+json
+Copy code
+{
+  "DayOfWeek": 2,
+  "IsWeekend": false,
+  "DayOfMonth": 15,
+  "Month": 9,
+  "Year": 2023,
+  "IsStartOfMonth": false,
+  "IsMidMonth": true,
+  "IsEndOfMonth": false,
+  "DaysToHoliday": 10
+}
+DayOfWeek: Integer representing the day of the week (Monday = 0, Sunday = 6).
+IsWeekend: Boolean (true or false) indicating if the day is a weekend.
+DayOfMonth: Integer representing the day of the month.
+Month: Integer representing the month.
+Year: Integer representing the year.
+IsStartOfMonth, IsMidMonth, IsEndOfMonth: Booleans indicating the period of the month.
+DaysToHoliday: Integer representing how many days until the nearest holiday.
+Response: JSON object with the predicted sales.
+
+Example response:
+
+json
+{
+  "predicted_sales": 5634.52
+}
+Running with Docker
+To deploy the FastAPI app using Docker, follow these steps:
+
+Build the Docker image:
+
+docker build -t sales-prediction-api .
+Run the Docker container:
+
+docker run -d -p 8000:8000 sales-prediction-api
+The API will be available at http://127.0.0.1:8000.
+
+Deployment
+You can deploy this API to cloud platforms like AWS, Google Cloud, Azure, or Heroku. For production deployment, you can also use Docker to containerize the app.
+
+Example Deployment with Heroku
+Install the Heroku CLI and log in:
+heroku login
+Create a new Heroku app:
+
+heroku create store-sales-prediction-api
+Deploy the app:
+
+git push heroku master
+Open the deployed app:
+
+heroku open
+Project Structure
+
+├── app.py               # Main FastAPI application
+├── sales_model_rf.pkl    # Pre-trained model (Random Forest)
+├── Dockerfile            # Dockerfile for containerization
+├── README.md             # Project documentation
+└── requirements.txt      # Required dependencies
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
