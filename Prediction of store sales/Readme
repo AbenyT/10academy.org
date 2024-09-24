@@ -1,0 +1,76 @@
+Sales Prediction Models Using Machine Learning and Deep Learning
+This repository contains a project for predicting sales using various machine learning models (RandomForest, GradientBoosting, and XGBoost) as well as a deep learning model (LSTM). It walks through a typical workflow, from loading the dataset to preprocessing, model training, evaluation, and saving models for future use.
+
+Table of Contents
+Installation
+Dataset
+Preprocessing
+Model Training
+Evaluation
+Feature Importance
+Saving Models
+Deep Learning - LSTM Model
+Results
+1. Installation
+Requirements:
+Python 3.x
+Libraries required:
+bash
+Copy code
+pip install numpy pandas scikit-learn joblib matplotlib tensorflow xgboost
+2. Dataset
+The dataset should be loaded as a pandas DataFrame, containing at least the following columns:
+
+Sales: The target variable representing the sales amount.
+Customers: The number of customers visiting the store (optional but recommended).
+Date: The date of sales for generating time-based features.
+3. Preprocessing
+In the preprocessing step, we:
+
+Convert the Date column to a datetime object.
+Generate new features such as day of the week, month, year, weekend flags, and days to holiday.
+Fill missing values with the median of each column.
+Split the dataset into features (X) and target (y), followed by train-test splitting.
+4. Model Training
+This project employs three regression models:
+
+RandomForestRegressor
+GradientBoostingRegressor
+XGBoostRegressor (optional)
+Each model is trained using sklearn.pipeline.Pipeline, which scales the data and applies the regressor. The training process is straightforward and involves fitting the model to the training data.
+
+5. Evaluation
+The models are evaluated using Root Mean Squared Error (RMSE) and Mean Absolute Error (MAE). The predictions are made on the validation set, and the following metrics are calculated:
+
+RMSE
+MAE
+MSE (Mean Squared Error)
+You can find a summary of these metrics in the output logs.
+
+6. Feature Importance
+For the GradientBoostingRegressor, we plot the feature importance to understand which features most influence the sales predictions. The plot is visualized using matplotlib.
+
+7. Saving Models
+After training, each model is serialized using joblib and saved with a timestamp. You can later load these models for predictions or further analysis:
+
+python
+Copy code
+joblib.dump(pipeline_rf, "sales_model_rf_<timestamp>.pkl")
+8. Deep Learning - LSTM Model
+A Long Short-Term Memory (LSTM) model is implemented for time series sales prediction.
+
+The input data is scaled between (-1, 1) using MinMaxScaler.
+The data is reshaped to match the LSTM input requirements (samples, timesteps, features).
+The LSTM model is compiled with adam optimizer and trained on the data for 20 epochs.
+The results are evaluated using RMSE.
+9. Results
+Model performance is evaluated based on RMSE values:
+
+RandomForest RMSE
+GradientBoosting RMSE
+XGBoost RMSE
+LSTM RMSE
+The output of the RMSE for each model is printed for comparison, allowing you to choose the best-performing model.
+
+License
+This project is licensed under the MIT License.
