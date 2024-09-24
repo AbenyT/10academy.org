@@ -1,0 +1,53 @@
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+import joblib
+import numpy as np
+import pandas as pd
+
+# Create FastAPI app
+app = FastAPI()
+
+# Load the pre-trained model (RandomForest model as an example)
+model_path = "sales_model_rf_2023-09-24-14-33-00.pkl"  # Replace with your serialized model path
+model = joblib.load(model_path)
+
+# Input schema for the prediction request
+class SalesPredictionInput(BaseModel):
+    DayOfWeek: int
+    IsWeekend: bool
+    DayOfMonth: int
+    Month: int
+    Year: int
+    IsStartOfMonth: bool
+    IsMidMonth: bool
+    IsEndOfMonth: bool
+    DaysToHoliday: int
+
+# Root endpoint to check if the API is running
+@app.get("/")
+def read_root():
+    return {"message": "Store Sales Prediction API is running"}
+
+# Prediction endpoint
+@app.post("/predict")
+def predict_sales(input_data: SalesPredictionInput):
+    try:
+        # Convert input data to a dataframe
+        input_dict = input_data.dict()
+        input_df = pd.DataFrame([input_dict])
+
+        # Convert boolean columns to integer (True = 1, False = 0)
+        input_df['IsWeekend'] = input_df['IsWeekend'].astype(int)
+        input_df['IsStartOfMonth'] = input_df['IsStartOfMonth'].astype(int)
+        input_df['IsMidMonth'] = input_df['IsMidMonth'].astype(int)
+        input_df['IsEndOfMonth'] = input_df['IsEndOfMonth'].astype(int)
+
+        # Make prediction using the loaded model
+        prediction = model.predict(input_df)
+
+        # Return the prediction as JSON response
+        return {"predicted_sales": prediction[0]}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
